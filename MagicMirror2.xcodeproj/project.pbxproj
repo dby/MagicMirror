@@ -10,11 +10,18 @@
 		4348B4CB1C0DEDD5001345EB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4348B4CA1C0DEDD5001345EB /* main.m */; };
 		4348B4CE1C0DEDD5001345EB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4348B4CD1C0DEDD5001345EB /* AppDelegate.m */; };
 		4348B4D11C0DEDD5001345EB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4348B4D01C0DEDD5001345EB /* ViewController.m */; };
-		4348B4D41C0DEDD5001345EB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4348B4D21C0DEDD5001345EB /* Main.storyboard */; };
 		4348B4D61C0DEDD5001345EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4348B4D51C0DEDD5001345EB /* Assets.xcassets */; };
-		4348B4D91C0DEDD5001345EB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4348B4D71C0DEDD5001345EB /* LaunchScreen.storyboard */; };
 		4348B4E41C0DEDD5001345EB /* MagicMirror2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4348B4E31C0DEDD5001345EB /* MagicMirror2Tests.m */; };
 		4348B4EF1C0DEDD5001345EB /* MagicMirror2UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4348B4EE1C0DEDD5001345EB /* MagicMirror2UITests.m */; };
+		4348B51E1C0DFD47001345EB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4348B51D1C0DFD47001345EB /* Default-568h@2x.png */; };
+		4348B5211C0DFDAC001345EB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4348B51F1C0DFDAC001345EB /* LaunchScreen.storyboard */; };
+		4348B5221C0DFDAC001345EB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4348B5201C0DFDAC001345EB /* Main.storyboard */; };
+		4348B52F1C0DFE73001345EB /* Auth.m in Sources */ = {isa = PBXBuildFile; fileRef = 4348B5271C0DFE73001345EB /* Auth.m */; };
+		4348B5301C0DFE73001345EB /* Conf.m in Sources */ = {isa = PBXBuildFile; fileRef = 4348B5291C0DFE73001345EB /* Conf.m */; };
+		4348B5311C0DFE73001345EB /* TXQcloudFrSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 4348B52B1C0DFE73001345EB /* TXQcloudFrSDK.m */; };
+		4348B5321C0DFE73001345EB /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 4348B52E1C0DFE73001345EB /* NSData+Base64.m */; };
+		4348B5361C0E003E001345EB /* face.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4348B5341C0E003E001345EB /* face.jpg */; };
+		4348B5371C0E003E001345EB /* id.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4348B5351C0E003E001345EB /* id.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,9 +48,7 @@
 		4348B4CD1C0DEDD5001345EB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		4348B4CF1C0DEDD5001345EB /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		4348B4D01C0DEDD5001345EB /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		4348B4D31C0DEDD5001345EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4348B4D51C0DEDD5001345EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4348B4D81C0DEDD5001345EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4348B4DA1C0DEDD5001345EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4348B4DF1C0DEDD5001345EB /* MagicMirror2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MagicMirror2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4348B4E31C0DEDD5001345EB /* MagicMirror2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MagicMirror2Tests.m; sourceTree = "<group>"; };
@@ -51,6 +56,19 @@
 		4348B4EA1C0DEDD5001345EB /* MagicMirror2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MagicMirror2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4348B4EE1C0DEDD5001345EB /* MagicMirror2UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MagicMirror2UITests.m; sourceTree = "<group>"; };
 		4348B4F01C0DEDD5001345EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4348B51D1C0DFD47001345EB /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
+		4348B51F1C0DFDAC001345EB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		4348B5201C0DFDAC001345EB /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		4348B5261C0DFE73001345EB /* Auth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Auth.h; sourceTree = "<group>"; };
+		4348B5271C0DFE73001345EB /* Auth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Auth.m; sourceTree = "<group>"; };
+		4348B5281C0DFE73001345EB /* Conf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Conf.h; sourceTree = "<group>"; };
+		4348B5291C0DFE73001345EB /* Conf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Conf.m; sourceTree = "<group>"; };
+		4348B52A1C0DFE73001345EB /* TXQcloudFrSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXQcloudFrSDK.h; sourceTree = "<group>"; };
+		4348B52B1C0DFE73001345EB /* TXQcloudFrSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXQcloudFrSDK.m; sourceTree = "<group>"; };
+		4348B52D1C0DFE73001345EB /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		4348B52E1C0DFE73001345EB /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		4348B5341C0E003E001345EB /* face.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = face.jpg; sourceTree = "<group>"; };
+		4348B5351C0E003E001345EB /* id.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = id.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +99,8 @@
 		4348B4BD1C0DEDD5001345EB = {
 			isa = PBXGroup;
 			children = (
+				4348B5331C0E003E001345EB /* resource */,
+				4348B5251C0DFE73001345EB /* TencentYoutuYun */,
 				4348B4C81C0DEDD5001345EB /* MagicMirror2 */,
 				4348B4E21C0DEDD5001345EB /* MagicMirror2Tests */,
 				4348B4ED1C0DEDD5001345EB /* MagicMirror2UITests */,
@@ -105,10 +125,7 @@
 				4348B4CD1C0DEDD5001345EB /* AppDelegate.m */,
 				4348B4CF1C0DEDD5001345EB /* ViewController.h */,
 				4348B4D01C0DEDD5001345EB /* ViewController.m */,
-				4348B4D21C0DEDD5001345EB /* Main.storyboard */,
-				4348B4D51C0DEDD5001345EB /* Assets.xcassets */,
-				4348B4D71C0DEDD5001345EB /* LaunchScreen.storyboard */,
-				4348B4DA1C0DEDD5001345EB /* Info.plist */,
+				4348B5201C0DFDAC001345EB /* Main.storyboard */,
 				4348B4C91C0DEDD5001345EB /* Supporting Files */,
 			);
 			path = MagicMirror2;
@@ -117,6 +134,10 @@
 		4348B4C91C0DEDD5001345EB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4348B4D51C0DEDD5001345EB /* Assets.xcassets */,
+				4348B51F1C0DFDAC001345EB /* LaunchScreen.storyboard */,
+				4348B4DA1C0DEDD5001345EB /* Info.plist */,
+				4348B51D1C0DFD47001345EB /* Default-568h@2x.png */,
 				4348B4CA1C0DEDD5001345EB /* main.m */,
 			);
 			name = "Supporting Files";
@@ -138,6 +159,38 @@
 				4348B4F01C0DEDD5001345EB /* Info.plist */,
 			);
 			path = MagicMirror2UITests;
+			sourceTree = "<group>";
+		};
+		4348B5251C0DFE73001345EB /* TencentYoutuYun */ = {
+			isa = PBXGroup;
+			children = (
+				4348B5261C0DFE73001345EB /* Auth.h */,
+				4348B5271C0DFE73001345EB /* Auth.m */,
+				4348B5281C0DFE73001345EB /* Conf.h */,
+				4348B5291C0DFE73001345EB /* Conf.m */,
+				4348B52A1C0DFE73001345EB /* TXQcloudFrSDK.h */,
+				4348B52B1C0DFE73001345EB /* TXQcloudFrSDK.m */,
+				4348B52C1C0DFE73001345EB /* vendor */,
+			);
+			path = TencentYoutuYun;
+			sourceTree = "<group>";
+		};
+		4348B52C1C0DFE73001345EB /* vendor */ = {
+			isa = PBXGroup;
+			children = (
+				4348B52D1C0DFE73001345EB /* NSData+Base64.h */,
+				4348B52E1C0DFE73001345EB /* NSData+Base64.m */,
+			);
+			path = vendor;
+			sourceTree = "<group>";
+		};
+		4348B5331C0E003E001345EB /* resource */ = {
+			isa = PBXGroup;
+			children = (
+				4348B5341C0E003E001345EB /* face.jpg */,
+				4348B5351C0E003E001345EB /* id.jpg */,
+			);
+			path = resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,9 +296,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4348B4D91C0DEDD5001345EB /* LaunchScreen.storyboard in Resources */,
+				4348B5211C0DFDAC001345EB /* LaunchScreen.storyboard in Resources */,
+				4348B5361C0E003E001345EB /* face.jpg in Resources */,
+				4348B5371C0E003E001345EB /* id.jpg in Resources */,
+				4348B51E1C0DFD47001345EB /* Default-568h@2x.png in Resources */,
 				4348B4D61C0DEDD5001345EB /* Assets.xcassets in Resources */,
-				4348B4D41C0DEDD5001345EB /* Main.storyboard in Resources */,
+				4348B5221C0DFDAC001345EB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,9 +326,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4348B5301C0DFE73001345EB /* Conf.m in Sources */,
 				4348B4D11C0DEDD5001345EB /* ViewController.m in Sources */,
 				4348B4CE1C0DEDD5001345EB /* AppDelegate.m in Sources */,
+				4348B5321C0DFE73001345EB /* NSData+Base64.m in Sources */,
 				4348B4CB1C0DEDD5001345EB /* main.m in Sources */,
+				4348B5311C0DFE73001345EB /* TXQcloudFrSDK.m in Sources */,
+				4348B52F1C0DFE73001345EB /* Auth.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,25 +366,6 @@
 			targetProxy = 4348B4EB1C0DEDD5001345EB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		4348B4D21C0DEDD5001345EB /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4348B4D31C0DEDD5001345EB /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		4348B4D71C0DEDD5001345EB /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4348B4D81C0DEDD5001345EB /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		4348B4F11C0DEDD5001345EB /* Debug */ = {
