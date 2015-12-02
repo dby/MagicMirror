@@ -51,7 +51,7 @@
         if (!connectionError) {
             if (successBlock) {
                 NSString* str = [[NSString alloc] initWithData:dataResult encoding:NSUTF8StringEncoding];
-                NSLog(@"response data: %@", str);
+                //NSLog(@"response data1: %@", str);
                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:dataResult options:kNilOptions error:nil];
                 successBlock(json);
             }

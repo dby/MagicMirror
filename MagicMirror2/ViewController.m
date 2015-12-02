@@ -14,9 +14,23 @@
 #import "Auth.h"
 #import "TXQcloudFrSDK.h"
 
+#import "iflyMSC/IFlySpeechSynthesizerDelegate.h"
+#import "iflyMSC/IFlySpeechSynthesizer.h"
+
+//带界面的语音识别控件
+#import "iflyMSC/IFlyRecognizerViewDelegate.h"
+#import "iflyMSC/IFlyRecognizerView.h"
+
+#import "iflyMSC/IFlySpeechConstant.h"
+#import "iflyMSC/IFlySpeechUtility.h"
+#import "iflyMSC/IFlySpeechSynthesizer.h"
+
 typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 
-@interface ViewController ()
+@interface ViewController () <IFlySpeechSynthesizerDelegate>
+{
+    IFlySpeechSynthesizer *_iFlySpeechSynthesizer;
+}
 
 @property (strong,nonatomic) AVCaptureSession *captureSession;//负责输入和输出设备之间的数据传递
 @property (strong,nonatomic) AVCaptureDeviceInput *captureDeviceInput;//负责从AVCaptureDevice获得输入数据
@@ -26,7 +40,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 @property (weak, nonatomic) IBOutlet UIButton *flashAutoButton;//自动闪光灯按钮
 @property (weak, nonatomic) IBOutlet UIButton *flashOnButton;//打开闪光灯按钮
 @property (weak, nonatomic) IBOutlet UIButton *flashOffButton;//关闭闪光灯按钮
-@property (weak, nonatomic) IBOutlet UIImageView *focusCursor; //聚焦光标
+@property (weak, nonatomic) IBOutlet UIImageView *focusCursor;//聚焦光标
 
 @end
 
@@ -43,56 +57,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 - (void)initNavigationBar {
     UIBarButtonItem *toggleCameraBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(toggleCamera)];
     self.navigationItem.rightBarButtonItem = toggleCameraBtn;
-}
-
-- (void)initYouTu {
-    
-}
-
-- (void)analyseImage:(UIImage *)image{
-    
-    [Conf instance].appId = @"1003944";
-    [Conf instance].secretId = @"AKIDqVlfkOUMjhRaIfdiQtcVwVvJPIh1lauc";
-    [Conf instance].secretKey = @"aiw9FPW6C2tkT6JYmwm4lyv5OAs4Fbgc";
-    
-    NSString *auth = [Auth appSign:1000000 userId:nil];
-    TXQcloudFrSDK *sdk = [[TXQcloudFrSDK alloc] initWithName:[Conf instance].appId authorization:auth];
-    
-    sdk.API_END_POINT = @"http://api.youtu.qq.com/youtu";
-    
-    [sdk detectFace:image successBlock:^(id responseObject) {
-        NSLog(@"responseObject11: %@", responseObject);
-    } failureBlock:^(NSError *error) {
-        NSLog(@"error");
-    }];
-    
-    [sdk idcardOcr:image cardType:1 sessionId:nil successBlock:^(id responseObject) {
-        NSLog(@"responseObject22: %@", responseObject);
-    } failureBlock:^(NSError *error) {
-        
-    }];
-    [sdk imageTag:image cookie:nil seq:nil successBlock:^(id responseObject) {
-        NSLog(@"responseObject33: %@", responseObject);
-    } failureBlock:^(NSError *error) {
-        
-    }];
-    //    [sdk imagePorn:image cookie:nil seq:nil successBlock:^(id responseObject) {
-    //        NSLog(@"responseObject: %@", responseObject);
-    //    } failureBlock:^(NSError *error) {
-    //
-    //    }];
-    //
-    //    [sdk foodDetect:image cookie:nil seq:nil successBlock:^(id responseObject) {
-    //        NSLog(@"responseObject: %@", responseObject);
-    //    } failureBlock:^(NSError *error) {
-    //
-    //    }];
-    //    [sdk fuzzyDetect:image cookie:nil seq:nil successBlock:^(id responseObject) {
-    //        NSLog(@"responseObject: %@", responseObject);
-    //    } failureBlock:^(NSError *error) {
-    //
-    //    }];
-
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -162,6 +126,80 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [self removeNotification];
 }
 #pragma mark - UI方法
+#pragma mark - speak
+//
+//  @function:          合成语音信息
+//  @param - speed:     语速 0~100
+//  @param - volume:    音量 0~100
+//  @param - voiceName: 发音人，默认为“xiaoyan”；可以设置多个参数列表
+//  @param - message:   将要说的信息
+//
+- (void)speakMessage:(NSString *)speed Volume:(NSString *)volume VoiceName:(NSString *)voiceName Message:(NSString *)message {
+    // 创建合成对象，为单例模式
+    _iFlySpeechSynthesizer = [IFlySpeechSynthesizer sharedInstance];
+    _iFlySpeechSynthesizer.delegate = self;
+    //设置语音合成的参数
+    [_iFlySpeechSynthesizer setParameter:speed forKey:[IFlySpeechConstant SPEED]];
+    [_iFlySpeechSynthesizer setParameter:volume forKey: [IFlySpeechConstant VOLUME]];
+    [_iFlySpeechSynthesizer setParameter:voiceName forKey: [IFlySpeechConstant VOICE_NAME]];
+    //音频采样率,目前支持的采样率有 16000 和 8000
+    [_iFlySpeechSynthesizer setParameter:@"8000" forKey: [IFlySpeechConstant SAMPLE_RATE]];
+    //asr_audio_path保存录音文件路径，如不再需要，设置value为nil表示取消，默认目录是documents
+    //[_iFlySpeechSynthesizer setParameter:@" tts.pcm" forKey: [IFlySpeechConstant TTS_AUDIO_PATH]];
+    //启动合成会话
+    [_iFlySpeechSynthesizer startSpeaking: message];
+}
+
+#pragma mark - 分析照片
+- (void)analyseImage:(UIImage *)image{
+    
+    NSLog(@"Analyse Image.");
+    [Conf instance].appId = @"1003944";
+    [Conf instance].secretId = @"AKIDqVlfkOUMjhRaIfdiQtcVwVvJPIh1lauc";
+    [Conf instance].secretKey = @"aiw9FPW6C2tkT6JYmwm4lyv5OAs4Fbgc";
+    
+    NSString *auth = [Auth appSign:1000000 userId:nil];
+    TXQcloudFrSDK *sdk = [[TXQcloudFrSDK alloc] initWithName:[Conf instance].appId authorization:auth];
+    
+    sdk.API_END_POINT = @"http://api.youtu.qq.com/youtu";
+    
+    // 人脸检测
+    [sdk detectFace:image successBlock:^(id responseObject) {
+        NSLog(@"responseObject11: %@", responseObject);
+    } failureBlock:^(NSError *error) {
+        NSLog(@"error11");
+    }];
+    
+    [sdk idcardOcr:image cardType:1 sessionId:nil successBlock:^(id responseObject) {
+        NSLog(@"responseObject22: %@", responseObject);
+    } failureBlock:^(NSError *error) {
+        NSLog(@"error22");
+    }];
+    // 图像标签服务
+    [sdk imageTag:image cookie:nil seq:nil successBlock:^(id responseObject) {
+        NSLog(@"responseObject33: %@", responseObject);
+    } failureBlock:^(NSError *error) {
+        NSLog(@"error33");
+    }];
+    [sdk imagePorn:image cookie:nil seq:nil successBlock:^(id responseObject) {
+        NSLog(@"responseObject44: %@", responseObject);
+    } failureBlock:^(NSError *error) {
+        NSLog(@"error44");
+    }];
+    // 美食照片检测
+    [sdk foodDetect:image cookie:nil seq:nil successBlock:^(id responseObject) {
+        NSLog(@"responseObject55: %@", responseObject);
+    } failureBlock:^(NSError *error) {
+        NSLog(@"error55");
+    }];
+    // 模糊照片检测
+    [sdk fuzzyDetect:image cookie:nil seq:nil successBlock:^(id responseObject) {
+        NSLog(@"responseObject66: %@", responseObject);
+    } failureBlock:^(NSError *error) {
+        NSLog(@"error66");
+    }];
+}
+
 #pragma mark 拍照
 - (void)takePhotoAction {
     //根据设备输出获得连接
@@ -404,6 +442,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     CGPoint cameraPoint= [self.captureVideoPreviewLayer captureDevicePointOfInterestForPoint:point];
     [self setFocusCursorWithPoint:point];
     [self focusWithMode:AVCaptureFocusModeAutoFocus exposureMode:AVCaptureExposureModeAutoExpose atPoint:cameraPoint];
+    [self speakMessage:@"50" Volume:@"50" VoiceName:@"vixying" Message:@"晚安，我想要睡觉了"];
 }
 
 /**
@@ -455,4 +494,24 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         
     }];
 }
+
+#pragma mark 讯飞 delegate
+
+// 合成结束，此代理必须实现
+-(void)onCompleted:(IFlySpeechError *)error {
+    
+}
+// 合成开始
+-(void)onSpeakBegin{
+    
+}
+// 合成进度
+-(void)onBufferProgress:(int)progress message:(NSString *)msg {
+    
+}
+// 合成播放进度
+-(void)onSpeakProgress:(int)progress {
+    
+}
+
 @end
