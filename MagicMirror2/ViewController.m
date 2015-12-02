@@ -23,13 +23,10 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 @property (strong,nonatomic) AVCaptureStillImageOutput *captureStillImageOutput;//照片输出流
 @property (strong,nonatomic) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;//相机拍摄预览图层
 @property (weak, nonatomic) IBOutlet UIView *viewContainer;
-@property (weak, nonatomic) IBOutlet UIButton *takeButton;//拍照按钮
 @property (weak, nonatomic) IBOutlet UIButton *flashAutoButton;//自动闪光灯按钮
 @property (weak, nonatomic) IBOutlet UIButton *flashOnButton;//打开闪光灯按钮
 @property (weak, nonatomic) IBOutlet UIButton *flashOffButton;//关闭闪光灯按钮
 @property (weak, nonatomic) IBOutlet UIImageView *focusCursor; //聚焦光标
-
-
 
 @end
 
@@ -38,6 +35,21 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 #pragma mark - 控制器视图方法
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self initNavigationBar];
+    [self addGenstureRecognizer];
+}
+
+- (void)initNavigationBar {
+    UIBarButtonItem *toggleCameraBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(toggleCamera)];
+    self.navigationItem.rightBarButtonItem = toggleCameraBtn;
+}
+
+- (void)initYouTu {
+    
+}
+
+- (void)analyseImage:(UIImage *)image{
     
     [Conf instance].appId = @"1003944";
     [Conf instance].secretId = @"AKIDqVlfkOUMjhRaIfdiQtcVwVvJPIh1lauc";
@@ -48,43 +60,22 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     
     sdk.API_END_POINT = @"http://api.youtu.qq.com/youtu";
     
-    UIImage *local = [UIImage imageNamed:@"face.jpg"];
-    NSString *remote = @"http://a.hiphotos.baidu.com/image/pic/item/42166d224f4a20a4be2c49a992529822720ed0aa.jpg";
-    id image = remote;
-
+    [sdk detectFace:image successBlock:^(id responseObject) {
+        NSLog(@"responseObject11: %@", responseObject);
+    } failureBlock:^(NSError *error) {
+        NSLog(@"error");
+    }];
+    
     [sdk idcardOcr:image cardType:1 sessionId:nil successBlock:^(id responseObject) {
-        NSLog(@"responseObject: %@", responseObject);
+        NSLog(@"responseObject22: %@", responseObject);
     } failureBlock:^(NSError *error) {
         
     }];
     [sdk imageTag:image cookie:nil seq:nil successBlock:^(id responseObject) {
-        NSLog(@"responseObject: %@", responseObject);
+        NSLog(@"responseObject33: %@", responseObject);
     } failureBlock:^(NSError *error) {
         
     }];
-
-    
-}
-
-- (void)checkImage{
-    /*
-     [sdk detectFace:image successBlock:^(id responseObject) {
-     NSLog(@"responseObject11: %@", responseObject);
-     } failureBlock:^(NSError *error) {
-     NSLog(@"error");
-     }];
-    
-    [sdk idcardOcr:image cardType:1 sessionId:nil successBlock:^(id responseObject) {
-        NSLog(@"responseObject: %@", responseObject);
-    } failureBlock:^(NSError *error) {
-        
-    }];
-    [sdk imageTag:image cookie:nil seq:nil successBlock:^(id responseObject) {
-        NSLog(@"responseObject: %@", responseObject);
-    } failureBlock:^(NSError *error) {
-        
-    }];
-    */
     //    [sdk imagePorn:image cookie:nil seq:nil successBlock:^(id responseObject) {
     //        NSLog(@"responseObject: %@", responseObject);
     //    } failureBlock:^(NSError *error) {
@@ -172,7 +163,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 #pragma mark - UI方法
 #pragma mark 拍照
-- (IBAction)takeButtonClick:(UIButton *)sender {
+- (void)takePhotoAction {
     //根据设备输出获得连接
     AVCaptureConnection *captureConnection=[self.captureStillImageOutput connectionWithMediaType:AVMediaTypeVideo];
     //根据连接取得设备输出的数据
@@ -181,6 +172,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
             NSData *imageData=[AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
             UIImage *image=[UIImage imageWithData:imageData];
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+            [self analyseImage:image];
             //            ALAssetsLibrary *assetsLibrary=[[ALAssetsLibrary alloc]init];
             //            [assetsLibrary writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
         }
@@ -188,7 +180,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     }];
 }
 #pragma mark 切换前后摄像头
-- (IBAction)toggleButtonClick:(UIButton *)sender {
+- (void)toggleCamera {
     AVCaptureDevice *currentDevice=[self.captureDeviceInput device];
     AVCaptureDevicePosition currentPosition=[currentDevice position];
     [self removeNotificationFromCaptureDevice:currentDevice];
@@ -396,8 +388,15 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
  *  添加点按手势，点按时聚焦
  */
 -(void)addGenstureRecognizer{
-    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapScreen:)];
-    [self.viewContainer addGestureRecognizer:tapGesture];
+    UITapGestureRecognizer *singleTapGestureFocuse=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapScreen:)];
+    [singleTapGestureFocuse setNumberOfTapsRequired:1];
+    [self.viewContainer addGestureRecognizer:singleTapGestureFocuse];
+    
+    UITapGestureRecognizer *doubleTapGestureTakePhoto = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePhotoAction)];
+    [doubleTapGestureTakePhoto setNumberOfTapsRequired:2];
+    [self.viewContainer addGestureRecognizer:doubleTapGestureTakePhoto];
+    [singleTapGestureFocuse requireGestureRecognizerToFail:doubleTapGestureTakePhoto];
+    
 }
 -(void)tapScreen:(UITapGestureRecognizer *)tapGesture{
     CGPoint point= [tapGesture locationInView:self.viewContainer];
