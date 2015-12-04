@@ -18,24 +18,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HIZ-4M-Ssn">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="R1r-Nh-X6l">
+                                <rect key="frame" x="20" y="0.0" width="560" height="600"/>
                                 <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
+                                <constraints>
+                                    <constraint firstAttribute="width" id="1vl-zh-6Hz"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="1vl-zh-6Hz"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="HIZ-4M-Ssn" secondAttribute="trailing" constant="-20" id="BJI-2h-bal"/>
-                            <constraint firstItem="HIZ-4M-Ssn" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="VBX-ac-JwJ"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="HIZ-4M-Ssn" secondAttribute="bottom" id="d33-VJ-oHz"/>
-                            <constraint firstItem="HIZ-4M-Ssn" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="nxA-K4-2qS"/>
+                            <constraint firstItem="R1r-Nh-X6l" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="42u-4w-zdC"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="R1r-Nh-X6l" secondAttribute="bottom" id="7iD-1k-Ce1"/>
+                            <constraint firstItem="R1r-Nh-X6l" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="IWi-FN-4tk"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="R1r-Nh-X6l" secondAttribute="trailing" id="lCH-Ba-sqR"/>
+                            <constraint firstItem="R1r-Nh-X6l" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pKO-aH-8Cp"/>
+                            <constraint firstItem="R1r-Nh-X6l" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="xmF-HE-QyH"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="xmF-HE-QyH"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="MagicMirror" id="nQs-fH-aQ4"/>
                     <connections>
-                        <outlet property="viewContainer" destination="HIZ-4M-Ssn" id="SCp-vL-yJy"/>
+                        <outlet property="image" destination="R1r-Nh-X6l" id="kDO-8X-gVX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
