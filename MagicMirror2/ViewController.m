@@ -32,7 +32,8 @@
 
 @property (strong, nonatomic) UIAlertController *actionSheet;
 @property (strong, nonatomic) UIImagePickerController *imagePicker;
-@property (weak, nonatomic) IBOutlet UIImageView *image;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 
 @end
 
@@ -78,11 +79,11 @@
 
 -(UIImageView *)image {
     
-    if (!_image) {
-        [_image setContentMode:UIViewContentModeScaleAspectFit];
+    if (!_imageView) {
+        [_imageView setContentMode:UIViewContentModeScaleAspectFit];
     }
     
-    return _image;
+    return _imageView;
 }
 
 #pragma mark - UI方法
@@ -122,14 +123,53 @@
     TXQcloudFrSDK *sdk = [[TXQcloudFrSDK alloc] initWithName:[Conf instance].appId authorization:auth];
     
     sdk.API_END_POINT = @"http://api.youtu.qq.com/youtu";
-    /*
-    // 人脸检测
+    
+    // 人脸检测,判断检测人脸是否成功
     [sdk detectFace:image successBlock:^(id responseObject) {
-        NSLog(@"responseObject11: %@", responseObject);
+        if ([responseObject[@"errorcode"] intValue] == 0) {
+            NSLog(@"检测人脸成功...");
+            
+            int x       = [responseObject[@"face"][0][@"x"] intValue];
+            int y       = [responseObject[@"face"][0][@"y"] intValue];
+            int width   = [responseObject[@"face"][0][@"width"] intValue];
+            int height  = [responseObject[@"face"][0][@"height"] intValue];
+            
+            CGRect faceRect = CGRectMake(x,
+                                         y,
+                                         width,
+                                         height );
+            
+            CGPoint textPoint = CGPointMake(x + width,
+                                            y);
+            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [NSString stringWithFormat:@"年龄:%@", responseObject[@"face"][0][@"age"]], @"age",
+                                 [NSString stringWithFormat:@"性别:%@", responseObject[@"face"][0][@"gender"]], @"gender",
+                                 [NSString stringWithFormat:@"表情:%@", responseObject[@"face"][0][@"expression"]], @"expression",
+                                 [NSString stringWithFormat:@"魅力:%@", responseObject[@"face"][0][@"beauty"]], @"beauty",
+                                 nil];
+            
+            UIImage *afterDrawedImage = [self imageByDrawingCircleOnImage:image forRect:faceRect text:dic textForPoint:textPoint];
+            [self.indicator stopAnimating];
+            [self.imageView setImage:afterDrawedImage];
+        }
+        else
+        {
+            NSLog(@"检测人脸失败...");
+            [self.indicator stopAnimating];
+            return ;
+        }
+        
     } failureBlock:^(NSError *error) {
         NSLog(@"error11");
     }];
+    //
+    [sdk faceShape:image successBlock:^(id responseObject) {
+        NSLog(@"faceShape: %@", responseObject);
+    } failureBlock:^(NSError *error) {
+        
+    }];
     
+    /*
     [sdk idcardOcr:image cardType:1 sessionId:nil successBlock:^(id responseObject) {
         NSLog(@"responseObject22: %@", responseObject);
     } failureBlock:^(NSError *error) {
@@ -158,24 +198,18 @@
     } failureBlock:^(NSError *error) {
         NSLog(@"error66");
     }];
-     */
-    [sdk faceShape:image successBlock:^(id responseObject) {
-        NSLog(@"faceShape: %@", responseObject);
-    } failureBlock:^(NSError *error) {
-        
-    }];
+    
+    */
 }
 
 //从相册选择
 -(void)LocalPhoto{
-    NSLog(@"aaa LocalPhoto");
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     [self presentViewController:self.imagePicker animated:YES completion:nil];
 }
 
 //拍照
 -(void)takePhoto{
-    NSLog(@"aaa takePhoto");
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
         self.imagePicker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
         self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -201,12 +235,12 @@
                                                     preferredStyle:UIAlertControllerStyleActionSheet];
         // 在action sheet中，UIAlertActionStyleCancel不起作用
         UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"Camera" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            NSLog(@"takephoto");
             [self takePhoto];
+            [self.indicator startAnimating];
         }];
         UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"Photo Library" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            NSLog(@"photoLibrary");
             [self LocalPhoto];
+            [self.indicator startAnimating];
         }];
         UIAlertAction *act3 = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
         }];
@@ -233,6 +267,39 @@
     [self.viewContainer addGestureRecognizer:doubleTapGestureTakePhoto];
     [singleTapGestureFocuse requireGestureRecognizerToFail:doubleTapGestureTakePhoto];
     */
+}
+
+//
+//  在Image上圈出头部，并弹出年龄、性别、表情、魅力
+//
+//
+- (UIImage *)imageByDrawingCircleOnImage:(UIImage *)image forRect:(CGRect )rect text:(NSDictionary *)textDic textForPoint:(CGPoint)point
+{
+    UIGraphicsBeginImageContext(image.size);            // begin a graphics context of sufficient size
+    [image drawAtPoint:CGPointZero];                    // draw original image into the context
+    CGContextRef ctx = UIGraphicsGetCurrentContext();   // get the context for CoreGraphics
+    [[UIColor redColor] setStroke];                     // set stroking color and draw rect
+    rect = CGRectInset(rect, 5, 5);
+    CGContextStrokeRect(ctx, rect);
+
+    UIFont *font = [UIFont systemFontOfSize:35.0];
+    UIColor *textColor =[UIColor blackColor];
+    NSDictionary *dicAttribute = @{
+                                   NSFontAttributeName:font,
+                                   NSForegroundColorAttributeName:textColor,
+                                   NSBackgroundColorAttributeName:[UIColor colorWithRed:85 green:238 blue:180 alpha:1.0],
+                                   
+                                   };
+    
+    [textDic[@"age"] drawAtPoint:point withAttributes:dicAttribute];
+    [textDic[@"gender"] drawAtPoint:CGPointMake(point.x, point.y+50) withAttributes:dicAttribute];
+    [textDic[@"expression"] drawAtPoint:CGPointMake(point.x, point.y+100) withAttributes:dicAttribute];
+    [textDic[@"beauty"] drawAtPoint:CGPointMake(point.x, point.y+150) withAttributes:dicAttribute];
+    
+    UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();    // make image out of bitmap context
+    UIGraphicsEndImageContext();                                        // free the context
+    
+    return retImage;
 }
 
 #pragma mark 讯飞 delegate
@@ -265,8 +332,9 @@
         image=[info objectForKey:UIImagePickerControllerOriginalImage];//获取原始照片
     }
     //UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-    [self.image setImage:image];
+    [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
     [self analyseImage:image];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

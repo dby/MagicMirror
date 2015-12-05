@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="R1r-Nh-X6l">
-                                <rect key="frame" x="20" y="0.0" width="560" height="600"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="528"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" id="1vl-zh-6Hz"/>
@@ -30,26 +30,43 @@
                                     </mask>
                                 </variation>
                             </imageView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="XAF-nu-yYY">
+                                <rect key="frame" x="290" y="318" width="20" height="20"/>
+                                <animations/>
+                                <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="R1r-Nh-X6l" secondAttribute="bottom" constant="8" symbolic="YES" id="2sc-z6-YuW"/>
                             <constraint firstItem="R1r-Nh-X6l" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="42u-4w-zdC"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="R1r-Nh-X6l" secondAttribute="bottom" id="7iD-1k-Ce1"/>
                             <constraint firstItem="R1r-Nh-X6l" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="IWi-FN-4tk"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="R1r-Nh-X6l" secondAttribute="leading" constant="20" id="Nlw-Nj-ZTA"/>
+                            <constraint firstItem="XAF-nu-yYY" firstAttribute="centerY" secondItem="R1r-Nh-X6l" secondAttribute="centerY" id="PJn-lL-o0c"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="R1r-Nh-X6l" secondAttribute="trailing" constant="-20" id="Shx-jZ-UCL"/>
                             <constraint firstAttribute="trailingMargin" secondItem="R1r-Nh-X6l" secondAttribute="trailing" id="lCH-Ba-sqR"/>
+                            <constraint firstItem="R1r-Nh-X6l" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="oUW-ia-UEW"/>
                             <constraint firstItem="R1r-Nh-X6l" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pKO-aH-8Cp"/>
                             <constraint firstItem="R1r-Nh-X6l" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="xmF-HE-QyH"/>
+                            <constraint firstItem="XAF-nu-yYY" firstAttribute="centerX" secondItem="R1r-Nh-X6l" secondAttribute="centerX" id="y1D-Ls-Pro"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="42u-4w-zdC"/>
+                                <exclude reference="IWi-FN-4tk"/>
+                                <exclude reference="lCH-Ba-sqR"/>
+                                <exclude reference="pKO-aH-8Cp"/>
                                 <exclude reference="xmF-HE-QyH"/>
+                                <exclude reference="7iD-1k-Ce1"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="MagicMirror" id="nQs-fH-aQ4"/>
                     <connections>
-                        <outlet property="image" destination="R1r-Nh-X6l" id="kDO-8X-gVX"/>
+                        <outlet property="imageView" destination="R1r-Nh-X6l" id="9vb-Aw-kax"/>
+                        <outlet property="indicator" destination="XAF-nu-yYY" id="sj3-XQ-zqO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
