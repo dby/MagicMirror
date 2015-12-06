@@ -14,6 +14,10 @@
 #import "Auth.h"
 #import "TXQcloudFrSDK.h"
 
+#import "Constant.h"
+#import "IATConfig.h"
+#import "TalkRequest.h"
+
 #import "iflyMSC/IFlySpeechSynthesizerDelegate.h"
 #import "iflyMSC/IFlySpeechSynthesizer.h"
 
@@ -25,15 +29,20 @@
 #import "iflyMSC/IFlySpeechUtility.h"
 #import "iflyMSC/IFlySpeechSynthesizer.h"
 
-@interface ViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, IFlySpeechSynthesizerDelegate>
+@interface ViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, IFlySpeechSynthesizerDelegate, IFlyRecognizerViewDelegate>
 {
-    IFlySpeechSynthesizer *_iFlySpeechSynthesizer;
+    IFlySpeechSynthesizer   *_iFlySpeechSynthesizer;
+    IFlyRecognizerView      *_iflyRecognizerView;
+
+    CGRect                  mainScreen;
 }
 
 @property (strong, nonatomic) UIAlertController *actionSheet;
 @property (strong, nonatomic) UIImagePickerController *imagePicker;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
+
+@property (nonatomic, strong) IFlyRecognizerView *iflyRecognizerView;//带界面的识别对象
 
 @end
 
@@ -43,8 +52,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self initPara];
     [self initNavigationBar];
     [self addGenstureRecognizer];
+    
+    //[self speechRecognition];
+    [self robot:@"你好"];
 }
 
 - (void)initNavigationBar {
@@ -52,6 +65,10 @@
     
     NSArray * rightButtons = [[NSArray alloc] initWithObjects:choosePhoto, nil];
     self.navigationItem.rightBarButtonItems = rightButtons;
+}
+
+- (void)initPara {
+    mainScreen = [UIScreen mainScreen].bounds;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -111,6 +128,61 @@
     [_iFlySpeechSynthesizer startSpeaking: message];
 }
 
+- (void)speechRecognition
+{
+    _iflyRecognizerView = [[IFlyRecognizerView alloc] initWithCenter:self.view.center];     // 初始化语音识别控件
+    _iflyRecognizerView.delegate = self;
+    [_iflyRecognizerView setParameter: @"iat" forKey: [IFlySpeechConstant IFLY_DOMAIN]];
+    [_iflyRecognizerView setParameter: @"plain" forKey:[IFlySpeechConstant RESULT_TYPE]];   // 设置听写结果格式 json
+    [_iflyRecognizerView start];
+}
+
+#pragma mark - 获得照片得信息
+//
+//  检测人脸成功之后，获得表情、年龄、性别、魅力等信息，并保持字符串长度一致
+//
+- (NSDictionary *)getDateByAnalysingImage:(NSDictionary *)responseObject
+{
+    NSMutableString *expression  = [NSMutableString stringWithString:@"表情:似笑非笑"];
+    //expression  = [NSMutableString stringWithFormat:@"表情:%@", responseObject[@"face"][0][@"expression"]];
+    NSString *gender;
+    if ([responseObject[@"face"][0][@"gender"] intValue] > 60) {
+        gender = @"性别: 男";
+    } else if ([responseObject[@"face"][0][@"gender"]intValue] < 10) {
+        gender = @"性别: 女";
+    } else
+        gender = @"性别: 难以判断";
+    NSMutableString *age         = [NSMutableString stringWithFormat:@"年龄: %@", responseObject[@"face"][0][@"age"]];
+    NSMutableString *beauty      = [NSMutableString stringWithFormat:@"魅力: %@", responseObject[@"face"][0][@"beauty"]];
+    
+    NSLog(@"age:%lu, expression:%lu", (unsigned long)age.length, (unsigned long)expression.length);
+    
+    if (age.length < expression.length) {
+        [age stringByAppendingString:@"     "];
+    }
+    
+    NSDictionary *res = [NSDictionary dictionaryWithObjectsAndKeys:
+                         age, @"age",
+                         gender, @"gender",
+                         expression, @"expression",
+                         beauty, @"beauty",
+                         nil];
+    return res;
+}
+
+//
+// 智能语音聊天，反馈回消息
+//
+- (void)robot:(NSString *)info {
+    
+    TalkRequest *request = [[TalkRequest alloc] initWithInfo:info];
+    [request startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        NSLog(@"request: %@", [request.responseJSONObject objectForKey:@"text"]);
+    } failure:^(YTKBaseRequest *request) {
+        
+    }];
+}
+
 #pragma mark - 分析照片
 - (void)analyseImage:(UIImage *)image{
     
@@ -141,14 +213,8 @@
             
             CGPoint textPoint = CGPointMake(x + width,
                                             y);
-            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:
-                                 [NSString stringWithFormat:@"年龄:%@", responseObject[@"face"][0][@"age"]], @"age",
-                                 [NSString stringWithFormat:@"性别:%@", responseObject[@"face"][0][@"gender"]], @"gender",
-                                 [NSString stringWithFormat:@"表情:%@", responseObject[@"face"][0][@"expression"]], @"expression",
-                                 [NSString stringWithFormat:@"魅力:%@", responseObject[@"face"][0][@"beauty"]], @"beauty",
-                                 nil];
             
-            UIImage *afterDrawedImage = [self imageByDrawingCircleOnImage:image forRect:faceRect text:dic textForPoint:textPoint];
+            UIImage *afterDrawedImage = [self imageByDrawingCircleOnImage:image forRect:faceRect text:[self getDateByAnalysingImage:responseObject] textForPoint:textPoint];
             [self.indicator stopAnimating];
             [self.imageView setImage:afterDrawedImage];
         }
@@ -164,7 +230,7 @@
     }];
     //
     [sdk faceShape:image successBlock:^(id responseObject) {
-        NSLog(@"faceShape: %@", responseObject);
+        //NSLog(@"faceShape: %@", responseObject);
     } failureBlock:^(NSError *error) {
         
     }];
@@ -236,10 +302,12 @@
         // 在action sheet中，UIAlertActionStyleCancel不起作用
         UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"Camera" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self takePhoto];
+            [self.imageView clearsContextBeforeDrawing];
             [self.indicator startAnimating];
         }];
         UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"Photo Library" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self LocalPhoto];
+            [self.imageView clearsContextBeforeDrawing];
             [self.indicator startAnimating];
         }];
         UIAlertAction *act3 = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
@@ -278,18 +346,19 @@
     UIGraphicsBeginImageContext(image.size);            // begin a graphics context of sufficient size
     [image drawAtPoint:CGPointZero];                    // draw original image into the context
     CGContextRef ctx = UIGraphicsGetCurrentContext();   // get the context for CoreGraphics
-    [[UIColor redColor] setStroke];                     // set stroking color and draw rect
+    [[UIColor greenColor] setStroke];                   // set stroking color and draw rect
     rect = CGRectInset(rect, 5, 5);
     CGContextStrokeRect(ctx, rect);
 
-    UIFont *font = [UIFont systemFontOfSize:35.0];
-    UIColor *textColor =[UIColor blackColor];
     NSDictionary *dicAttribute = @{
-                                   NSFontAttributeName:font,
-                                   NSForegroundColorAttributeName:textColor,
-                                   NSBackgroundColorAttributeName:[UIColor colorWithRed:85 green:238 blue:180 alpha:1.0],
-                                   
+                                   NSFontAttributeName:[UIFont systemFontOfSize:30.0],
+                                   NSForegroundColorAttributeName:[UIColor blackColor],
+                                   NSBackgroundColorAttributeName:[UIColor cyanColor],
                                    };
+    NSLog(@"point.x: %f, width:%f", point.x + rect.size.width, SCREEN_WIDTH * SCREEN_SCALE);
+    if ((point.x + rect.size.width) > (SCREEN_SCALE * SCREEN_WIDTH)) {
+        point.x = 10;
+    }
     
     [textDic[@"age"] drawAtPoint:point withAttributes:dicAttribute];
     [textDic[@"gender"] drawAtPoint:CGPointMake(point.x, point.y+50) withAttributes:dicAttribute];
@@ -331,11 +400,29 @@
     }else{
         image=[info objectForKey:UIImagePickerControllerOriginalImage];//获取原始照片
     }
-    //UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+    // UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
     [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
     [self analyseImage:image];
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark IFlyRecognizerViewDelegate
+
+-(void)onResult:(NSArray *)resultArray isLast:(BOOL)isLast
+{
+    NSMutableString *result = [[NSMutableString alloc] init];
+    NSDictionary *dic = [resultArray objectAtIndex:0];
+    
+    for (NSString *key in dic) {
+        [result appendFormat:@"%@",key];
+    }
+    NSLog(@"result: %@", result);
+}
+
+-(void)onError:(IFlySpeechError *)error
+{
+    
 }
 
 @end

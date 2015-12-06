@@ -14,6 +14,8 @@
 		43121D191C0F3959004A8857 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43121D181C0F3959004A8857 /* CoreLocation.framework */; };
 		43121D1B1C0F397A004A8857 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43121D1A1C0F397A004A8857 /* UIKit.framework */; };
 		43121D1D1C0F398C004A8857 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43121D1C1C0F398C004A8857 /* Foundation.framework */; };
+		4330EF131C141F4600A81CAF /* IATConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4330EF121C141F4600A81CAF /* IATConfig.m */; };
+		4330EF161C14295600A81CAF /* TalkRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4330EF151C14295600A81CAF /* TalkRequest.m */; };
 		4348B4CB1C0DEDD5001345EB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4348B4CA1C0DEDD5001345EB /* main.m */; };
 		4348B4CE1C0DEDD5001345EB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4348B4CD1C0DEDD5001345EB /* AppDelegate.m */; };
 		4348B4D11C0DEDD5001345EB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4348B4D01C0DEDD5001345EB /* ViewController.m */; };
@@ -66,6 +68,10 @@
 		43121D1A1C0F397A004A8857 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		43121D1C1C0F398C004A8857 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		43121D1F1C0F3C7C004A8857 /* Constant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
+		4330EF111C141F4600A81CAF /* IATConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IATConfig.h; sourceTree = "<group>"; };
+		4330EF121C141F4600A81CAF /* IATConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IATConfig.m; sourceTree = "<group>"; };
+		4330EF141C14295600A81CAF /* TalkRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkRequest.h; sourceTree = "<group>"; };
+		4330EF151C14295600A81CAF /* TalkRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TalkRequest.m; sourceTree = "<group>"; };
 		4348B4C61C0DEDD5001345EB /* MagicMirror2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagicMirror2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4348B4CA1C0DEDD5001345EB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4348B4CC1C0DEDD5001345EB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -181,6 +187,8 @@
 			isa = PBXGroup;
 			children = (
 				43121D1F1C0F3C7C004A8857 /* Constant.h */,
+				4330EF141C14295600A81CAF /* TalkRequest.h */,
+				4330EF151C14295600A81CAF /* TalkRequest.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -188,6 +196,8 @@
 		431F36081C131DE3009A6874 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				4330EF111C141F4600A81CAF /* IATConfig.h */,
+				4330EF121C141F4600A81CAF /* IATConfig.m */,
 				4348B4CF1C0DEDD5001345EB /* ViewController.h */,
 				4348B4D01C0DEDD5001345EB /* ViewController.m */,
 			);
@@ -477,8 +487,10 @@
 			files = (
 				4348B5301C0DFE73001345EB /* Conf.m in Sources */,
 				4348B4D11C0DEDD5001345EB /* ViewController.m in Sources */,
+				4330EF131C141F4600A81CAF /* IATConfig.m in Sources */,
 				4348B4CE1C0DEDD5001345EB /* AppDelegate.m in Sources */,
 				4348B5321C0DFE73001345EB /* NSData+Base64.m in Sources */,
+				4330EF161C14295600A81CAF /* TalkRequest.m in Sources */,
 				4348B4CB1C0DEDD5001345EB /* main.m in Sources */,
 				4348B5311C0DFE73001345EB /* TXQcloudFrSDK.m in Sources */,
 				4348B52F1C0DFE73001345EB /* Auth.m in Sources */,
@@ -609,10 +621,10 @@
 				);
 				INFOPLIST_FILE = MagicMirror2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = sys.MagicMirror2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
@@ -628,10 +640,10 @@
 				);
 				INFOPLIST_FILE = MagicMirror2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = sys.MagicMirror2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};

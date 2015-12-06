@@ -9,13 +9,12 @@
 #ifndef Constant_h
 #define Constant_h
 
-public static class Constant {
-    
-    public static class VoiceName {
-        
-    }
-    
-};
+#import <UIKit/UIKit.h>
 
+#define SCREEN_WIDTH    CGRectGetWidth([UIApplication sharedApplication].keyWindow.bounds)
+#define SCREEN_HEIGHT   CGRectGetHeight([UIApplication sharedApplication].keyWindow.bounds)
+#define SCREEN_SCALE    [[UIScreen mainScreen] scale]
+
+static NSString * const BaseURL         = @"http://www.tuling123.com/openapi/api?";
 
 #endif /* Constant_h */

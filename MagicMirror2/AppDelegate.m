@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "Constant.h"
 #import "iflyMSC/IFlyMSC.h"
 
 @interface AppDelegate ()
@@ -35,6 +36,15 @@
     
     //所有服务启动前，需要确保执行createUtility
     [IFlySpeechUtility createUtility:initString];
+    
+    //Set Network
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    [YTKNetworkConfig sharedInstance].baseUrl = BaseURL;
+    
+    //Set UserAgent
+    NSDictionary *userAgent = @{@"UserAgent": @"Mozilla/5.0 (iPhone; CPU iPhone OS 8_4 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H143 Safari/600.1.4"};
+    [[NSUserDefaults standardUserDefaults] registerDefaults:userAgent];
+    
     return YES;
 }
 
