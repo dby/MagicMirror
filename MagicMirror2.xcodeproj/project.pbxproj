@@ -72,7 +72,7 @@
 		4330EF121C141F4600A81CAF /* IATConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IATConfig.m; sourceTree = "<group>"; };
 		4330EF141C14295600A81CAF /* TalkRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkRequest.h; sourceTree = "<group>"; };
 		4330EF151C14295600A81CAF /* TalkRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TalkRequest.m; sourceTree = "<group>"; };
-		4348B4C61C0DEDD5001345EB /* MagicMirror2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagicMirror2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4348B4C61C0DEDD5001345EB /* 魔镜.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "魔镜.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4348B4CA1C0DEDD5001345EB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4348B4CC1C0DEDD5001345EB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4348B4CD1C0DEDD5001345EB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -207,21 +207,21 @@
 		4348B4BD1C0DEDD5001345EB = {
 			isa = PBXGroup;
 			children = (
+				2ADB35EBCAB13543CE3AD34A /* Frameworks */,
 				43121D1E1C0F39BC004A8857 /* Lib */,
 				4348B4C81C0DEDD5001345EB /* MagicMirror2 */,
-				4348B5251C0DFE73001345EB /* TencentYoutuYun */,
 				4348B4E21C0DEDD5001345EB /* MagicMirror2Tests */,
 				4348B4ED1C0DEDD5001345EB /* MagicMirror2UITests */,
-				4348B4C71C0DEDD5001345EB /* Products */,
 				72D6DE3ACB81EDD54C338AA7 /* Pods */,
-				2ADB35EBCAB13543CE3AD34A /* Frameworks */,
+				4348B4C71C0DEDD5001345EB /* Products */,
+				4348B5251C0DFE73001345EB /* TencentYoutuYun */,
 			);
 			sourceTree = "<group>";
 		};
 		4348B4C71C0DEDD5001345EB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4348B4C61C0DEDD5001345EB /* MagicMirror2.app */,
+				4348B4C61C0DEDD5001345EB /* 魔镜.app */,
 				4348B4DF1C0DEDD5001345EB /* MagicMirror2Tests.xctest */,
 				4348B4EA1C0DEDD5001345EB /* MagicMirror2UITests.xctest */,
 			);
@@ -323,7 +323,7 @@
 			);
 			name = MagicMirror2;
 			productName = MagicMirror2;
-			productReference = 4348B4C61C0DEDD5001345EB /* MagicMirror2.app */;
+			productReference = 4348B4C61C0DEDD5001345EB /* 魔镜.app */;
 			productType = "com.apple.product-type.application";
 		};
 		4348B4DE1C0DEDD5001345EB /* MagicMirror2Tests */ = {
@@ -623,7 +623,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = sys.MagicMirror2;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "魔镜";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
@@ -642,7 +642,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = sys.MagicMirror2;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "魔镜";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;

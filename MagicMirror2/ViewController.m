@@ -16,6 +16,8 @@
 
 #import "Constant.h"
 #import "IATConfig.h"
+#import "JCAlertView.h"
+
 #import "TalkRequest.h"
 
 #import "iflyMSC/IFlySpeechSynthesizerDelegate.h"
@@ -55,13 +57,18 @@
     
     [self initPara];
     [self initNavigationBar];
+    
 }
 
 - (void)initNavigationBar {
+    
     UIBarButtonItem *choosePhoto = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(choosePhoto)];
     
     NSArray * rightButtons = [[NSArray alloc] initWithObjects:choosePhoto, nil];
     self.navigationItem.rightBarButtonItems = rightButtons;
+    
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    [self.navigationController.navigationBar setBarTintColor: [UIColor colorWithRed:21/255.0 green:118/255.0 blue:65/255.0 alpha:1]];
 }
 
 - (void)initPara {
@@ -245,6 +252,8 @@
         {
             NSLog(@"检测人脸失败...");
             [self.indicator stopAnimating];
+            [JCAlertView showOneButtonWithTitle:@"Error" Message:@"检测人脸失败，请重新选择照片..." ButtonType:JCAlertViewButtonTypeDefault ButtonTitle:@"ok" Click:^{
+            }];
             return ;
         }
         

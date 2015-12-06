@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4348B4C51C0DEDD5001345EB"
-               BuildableName = "MagicMirror2.app"
+               BuildableName = "&#x9b54;&#x955c;.app"
                BlueprintName = "MagicMirror2"
                ReferencedContainer = "container:MagicMirror2.xcodeproj">
             </BuildableReference>
@@ -53,7 +53,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4348B4C51C0DEDD5001345EB"
-            BuildableName = "MagicMirror2.app"
+            BuildableName = "&#x9b54;&#x955c;.app"
             BlueprintName = "MagicMirror2"
             ReferencedContainer = "container:MagicMirror2.xcodeproj">
          </BuildableReference>
@@ -76,7 +76,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4348B4C51C0DEDD5001345EB"
-            BuildableName = "MagicMirror2.app"
+            BuildableName = "&#x9b54;&#x955c;.app"
             BlueprintName = "MagicMirror2"
             ReferencedContainer = "container:MagicMirror2.xcodeproj">
          </BuildableReference>
@@ -95,7 +95,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4348B4C51C0DEDD5001345EB"
-            BuildableName = "MagicMirror2.app"
+            BuildableName = "&#x9b54;&#x955c;.app"
             BlueprintName = "MagicMirror2"
             ReferencedContainer = "container:MagicMirror2.xcodeproj">
          </BuildableReference>
