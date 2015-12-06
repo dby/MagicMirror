@@ -41,6 +41,7 @@
 @property (strong, nonatomic) UIImagePickerController *imagePicker;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
+@property (weak, nonatomic) IBOutlet UIButton *speakBtn;
 
 @property (nonatomic, strong) IFlyRecognizerView *iflyRecognizerView;//带界面的识别对象
 
@@ -54,10 +55,6 @@
     
     [self initPara];
     [self initNavigationBar];
-    [self addGenstureRecognizer];
-    
-    //[self speechRecognition];
-    [self robot:@"你好"];
 }
 
 - (void)initNavigationBar {
@@ -69,6 +66,25 @@
 
 - (void)initPara {
     mainScreen = [UIScreen mainScreen].bounds;
+    [self.speakBtn.layer setCornerRadius:CGRectGetHeight(self.speakBtn.frame) / 2];
+    
+    [self initIflyRecognizerView];
+}
+//
+// 初始化语音识别控件
+//
+- (void)initIflyRecognizerView
+{
+    if (nil != _iflyRecognizerView)
+        return;
+    _iflyRecognizerView = [[IFlyRecognizerView alloc] initWithCenter:self.view.center];     // 初始化语音识别控件
+    _iflyRecognizerView.delegate = self;
+    
+    IATConfig *instance = [IATConfig sharedInstance];
+    [_iflyRecognizerView setParameter:instance.speechTimeout forKey:[IFlySpeechConstant SPEECH_TIMEOUT]];   //设置最长录音时间
+    [_iflyRecognizerView setParameter:instance.vadEos forKey:[IFlySpeechConstant VAD_EOS]];                 //设置后端点
+    [_iflyRecognizerView setParameter:instance.vadBos forKey:[IFlySpeechConstant VAD_BOS]];                 //设置前端点
+    [_iflyRecognizerView setParameter:@"20000" forKey:[IFlySpeechConstant NET_TIMEOUT]];                    //网络等待时间
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -127,11 +143,15 @@
     //启动合成会话
     [_iFlySpeechSynthesizer startSpeaking: message];
 }
-
-- (void)speechRecognition
+#pragma mark - 语音听写
+//
+//  语音听写
+//
+- (IBAction)speechRecognition
 {
-    _iflyRecognizerView = [[IFlyRecognizerView alloc] initWithCenter:self.view.center];     // 初始化语音识别控件
-    _iflyRecognizerView.delegate = self;
+    [_iflyRecognizerView cancel];
+    
+    [_iflyRecognizerView setParameter:IFLY_AUDIO_SOURCE_MIC forKey:@"audio_source"];        //设置音频来源为麦克风
     [_iflyRecognizerView setParameter: @"iat" forKey: [IFlySpeechConstant IFLY_DOMAIN]];
     [_iflyRecognizerView setParameter: @"plain" forKey:[IFlySpeechConstant RESULT_TYPE]];   // 设置听写结果格式 json
     [_iflyRecognizerView start];
@@ -177,9 +197,12 @@
     
     TalkRequest *request = [[TalkRequest alloc] initWithInfo:info];
     [request startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
-        NSLog(@"request: %@", [request.responseJSONObject objectForKey:@"text"]);
-    } failure:^(YTKBaseRequest *request) {
         
+        NSLog(@"request: %@", [request.responseJSONObject objectForKey:@"text"]);
+        [self speakMessage:@"50" Volume:@"50" VoiceName:@"xiaoyan" Message:[request.responseJSONObject objectForKey:@"text"]];
+        
+    } failure:^(YTKBaseRequest *request) {
+        [self speakMessage:@"50" Volume:@"50" VoiceName:@"xiaoyan" Message:@"没清楚，再说一遍嘛"];
     }];
 }
 
@@ -268,13 +291,16 @@
     */
 }
 
-//从相册选择
+//
+// 从相册选择
+//
 -(void)LocalPhoto{
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     [self presentViewController:self.imagePicker animated:YES completion:nil];
 }
-
-//拍照
+//
+// 拍照
+//
 -(void)takePhoto{
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
         self.imagePicker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
@@ -418,6 +444,8 @@
         [result appendFormat:@"%@",key];
     }
     NSLog(@"result: %@", result);
+    [self robot:result];
+    [_iflyRecognizerView cancel];
 }
 
 -(void)onError:(IFlySpeechError *)error

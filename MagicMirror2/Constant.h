@@ -15,6 +15,9 @@
 #define SCREEN_HEIGHT   CGRectGetHeight([UIApplication sharedApplication].keyWindow.bounds)
 #define SCREEN_SCALE    [[UIScreen mainScreen] scale]
 
+#define IFLY_AUDIO_SOURCE_MIC    @"1"
+#define IFLY_AUDIO_SOURCE_STREAM @"-1"
+
 static NSString * const BaseURL         = @"http://www.tuling123.com/openapi/api?";
 
 #endif /* Constant_h */

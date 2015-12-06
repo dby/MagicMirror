@@ -30,11 +30,26 @@
                                     </mask>
                                 </variation>
                             </imageView>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="XAF-nu-yYY">
-                                <rect key="frame" x="290" y="318" width="20" height="20"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="XAF-nu-yYY">
+                                <rect key="frame" x="282" y="309" width="37" height="37"/>
                                 <animations/>
                                 <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PYV-bM-iRK">
+                                <rect key="frame" x="275" y="542" width="50" height="50"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="TxE-jS-hO9"/>
+                                    <constraint firstAttribute="height" constant="50" id="yZL-Uc-jGh"/>
+                                </constraints>
+                                <state key="normal" title="Speak">
+                                    <color key="titleColor" red="0.97920911379999998" green="0.97920911379999998" blue="0.97920911379999998" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="speechRecognition" destination="BYZ-38-t0r" eventType="touchUpInside" id="eG8-Dn-qhd"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -46,6 +61,8 @@
                             <constraint firstAttribute="leadingMargin" secondItem="R1r-Nh-X6l" secondAttribute="leading" constant="20" id="Nlw-Nj-ZTA"/>
                             <constraint firstItem="XAF-nu-yYY" firstAttribute="centerY" secondItem="R1r-Nh-X6l" secondAttribute="centerY" id="PJn-lL-o0c"/>
                             <constraint firstAttribute="trailingMargin" secondItem="R1r-Nh-X6l" secondAttribute="trailing" constant="-20" id="Shx-jZ-UCL"/>
+                            <constraint firstItem="PYV-bM-iRK" firstAttribute="centerX" secondItem="XAF-nu-yYY" secondAttribute="centerX" id="V4Z-51-kyM"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="PYV-bM-iRK" secondAttribute="bottom" constant="8" symbolic="YES" id="YbG-RQ-poA"/>
                             <constraint firstAttribute="trailingMargin" secondItem="R1r-Nh-X6l" secondAttribute="trailing" id="lCH-Ba-sqR"/>
                             <constraint firstItem="R1r-Nh-X6l" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="oUW-ia-UEW"/>
                             <constraint firstItem="R1r-Nh-X6l" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pKO-aH-8Cp"/>
@@ -67,6 +84,7 @@
                     <connections>
                         <outlet property="imageView" destination="R1r-Nh-X6l" id="9vb-Aw-kax"/>
                         <outlet property="indicator" destination="XAF-nu-yYY" id="sj3-XQ-zqO"/>
+                        <outlet property="speakBtn" destination="PYV-bM-iRK" id="fkk-3y-wKy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
