@@ -44,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 @property (weak, nonatomic) IBOutlet UIButton *speakBtn;
+@property (strong, nonatomic) NSArray *expressionArray;
 
 @property (nonatomic, strong) IFlyRecognizerView *iflyRecognizerView;//带界面的识别对象
 
@@ -57,6 +58,11 @@
     
     [self initPara];
     [self initNavigationBar];
+    [self initIflyRecognizerView];
+    
+    [JCAlertView showOneButtonWithTitle:@"Info" Message:@"小飞已经沉睡，请用颜值唤醒小飞." ButtonType:JCAlertViewButtonTypeDefault ButtonTitle:@"OK" Click:^{
+        
+    }];
     
 }
 
@@ -74,8 +80,9 @@
 - (void)initPara {
     mainScreen = [UIScreen mainScreen].bounds;
     [self.speakBtn.layer setCornerRadius:CGRectGetHeight(self.speakBtn.frame) / 2];
-    
-    [self initIflyRecognizerView];
+    [self.speakBtn setBackgroundColor:[UIColor colorWithRed:21/255.0 green:118/255.0 blue:65/255.0 alpha:1]];
+    [self.speakBtn setTitle:@"Speak" forState:UIControlStateNormal];
+    [self.speakBtn setHidden:YES];
 }
 //
 // 初始化语音识别控件
@@ -126,6 +133,12 @@
     return _imageView;
 }
 
+-(NSArray *)expressionArray
+{
+    _expressionArray = @[@"黯然伤神", @"半嗔半喜", @"似笑非笑", @"笑灼颜开", @"莞尔一笑", @"喜上眉梢", @"眉开眼笑", @"笑尽妖娆", @"心花怒放", @"一笑倾人城"];
+    return _expressionArray;
+}
+
 #pragma mark - UI方法
 #pragma mark - speak
 //
@@ -170,22 +183,51 @@
 //
 - (NSDictionary *)getDateByAnalysingImage:(NSDictionary *)responseObject
 {
-    NSMutableString *expression  = [NSMutableString stringWithString:@"表情:似笑非笑"];
-    //expression  = [NSMutableString stringWithFormat:@"表情:%@", responseObject[@"face"][0][@"expression"]];
-    NSString *gender;
-    if ([responseObject[@"face"][0][@"gender"] intValue] > 60) {
-        gender = @"性别: 男";
-    } else if ([responseObject[@"face"][0][@"gender"]intValue] < 10) {
-        gender = @"性别: 女";
-    } else
+    NSString    *gender;
+    NSString    *age;
+    NSString    *beauty;
+    int         beautyInt;
+    NSString    *expression;
+    int         genderId = 0;
+    NSString    *welcomStr;
+    int         expressionId;
+    
+    expressionId = [responseObject[@"face"][0][@"expression"] intValue] / 10;
+    expression = [NSString stringWithFormat:@"表情: %@", self.expressionArray[expressionId]];
+    
+    if ([responseObject[@"face"][0][@"gender"] intValue] > 50) {
+        gender      = @"性别: 男";
+        genderId    = 1;
+    } else if ([responseObject[@"face"][0][@"gender"]intValue] < 50) {
+        gender      = @"性别: 女";
+        genderId    = 2;
+    } else {
         gender = @"性别: 难以判断";
-    NSMutableString *age         = [NSMutableString stringWithFormat:@"年龄: %@", responseObject[@"face"][0][@"age"]];
-    NSMutableString *beauty      = [NSMutableString stringWithFormat:@"魅力: %@", responseObject[@"face"][0][@"beauty"]];
+    }
     
-    NSLog(@"age:%lu, expression:%lu", (unsigned long)age.length, (unsigned long)expression.length);
+    age         = [NSString stringWithFormat:@"年龄: %@", responseObject[@"face"][0][@"age"]];
+    beauty      = [NSString stringWithFormat:@"魅力: %@", responseObject[@"face"][0][@"beauty"]];
     
-    if (age.length < expression.length) {
-        [age stringByAppendingString:@"     "];
+    beautyInt = [responseObject[@"face"][0][@"beauty"]intValue];
+    if (beautyInt > 85 && genderId == 2) {
+        welcomStr = @"世间竟有如此出尘绝艳之女子，美女小飞想和你做朋友";
+    } else if (beautyInt > 85 && genderId == 1) {
+        welcomStr = @"英气逼人 玉树凌风，你好帅哥，我是笑小飞";
+    } else if (genderId == 1 && beautyInt > 70) {
+        welcomStr = @"帅哥，你好，我是小飞";
+    } else if (genderId == 2 && beautyInt >70) {
+        welcomStr = @"美女，你好，我是小飞";
+    }
+    
+    // 根据颜值判断，是否要唤醒小飞
+    if (beautyInt < 70) {
+        [JCAlertView showOneButtonWithTitle:@"Sorry" Message:@"您的颜值让小飞沉沉睡去..." ButtonType:JCAlertViewButtonTypeDefault ButtonTitle:@"OK" Click:^{
+            
+        }];
+        [self.speakBtn setHidden:YES];
+    } else {
+        [self speakMessage:@"50" Volume:@"50" VoiceName:@"xiaoyan" Message:welcomStr];
+        [self.speakBtn setHidden:NO];
     }
     
     NSDictionary *res = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -337,12 +379,10 @@
         // 在action sheet中，UIAlertActionStyleCancel不起作用
         UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"Camera" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self takePhoto];
-            [self.imageView clearsContextBeforeDrawing];
             [self.indicator startAnimating];
         }];
         UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"Photo Library" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self LocalPhoto];
-            [self.imageView clearsContextBeforeDrawing];
             [self.indicator startAnimating];
         }];
         UIAlertAction *act3 = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
