@@ -353,9 +353,10 @@
 // 拍照
 //
 -(void)takePhoto{
+    NSLog(@"takephoto...");
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
-        self.imagePicker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
         self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        self.imagePicker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
         [self presentViewController:self.imagePicker animated:YES completion:nil];
 
     }else {
@@ -386,6 +387,7 @@
             [self.indicator startAnimating];
         }];
         UIAlertAction *act3 = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+            [self.indicator stopAnimating];
         }];
         [_actionSheet addAction:act1];
         [_actionSheet addAction:act2];
@@ -493,6 +495,17 @@
         [result appendFormat:@"%@",key];
     }
     NSLog(@"result: %@", result);
+    NSString *reg = @"魔镜.*最漂亮.*";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", reg];
+    
+    if ([predicate evaluateWithObject:result]) {
+        NSLog(@"验证成功");
+        [self.imageView setImage:[UIImage imageNamed:@"ljf"]];
+        [self speakMessage:@"50" Volume:@"50" VoiceName:@"xiaoyan" Message:@"最美丽的女子就是她..."];
+        [_iflyRecognizerView cancel];
+        return;
+    }
+    
     [self robot:result];
     [_iflyRecognizerView cancel];
 }
