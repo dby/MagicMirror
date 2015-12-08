@@ -301,6 +301,10 @@
         
     } failureBlock:^(NSError *error) {
         NSLog(@"error11");
+        [self.indicator stopAnimating];
+        [JCAlertView showOneButtonWithTitle:@"ERROR" Message:[error localizedDescription] ButtonType:JCAlertViewButtonTypeDefault ButtonTitle:@"OK" Click:^{
+            
+        }];
     }];
     //
     [sdk faceShape:image successBlock:^(id responseObject) {
@@ -429,18 +433,28 @@
 
     NSDictionary *dicAttribute = @{
                                    NSFontAttributeName:[UIFont systemFontOfSize:30.0],
-                                   NSForegroundColorAttributeName:[UIColor blackColor],
-                                   NSBackgroundColorAttributeName:[UIColor cyanColor],
+                                   NSForegroundColorAttributeName:[UIColor whiteColor],
                                    };
     NSLog(@"point.x: %f, width:%f", point.x + rect.size.width, SCREEN_WIDTH * SCREEN_SCALE);
     if ((point.x + rect.size.width) > (SCREEN_SCALE * SCREEN_WIDTH)) {
         point.x = 10;
     }
     
-    [textDic[@"age"] drawAtPoint:point withAttributes:dicAttribute];
-    [textDic[@"gender"] drawAtPoint:CGPointMake(point.x, point.y+50) withAttributes:dicAttribute];
-    [textDic[@"expression"] drawAtPoint:CGPointMake(point.x, point.y+100) withAttributes:dicAttribute];
-    [textDic[@"beauty"] drawAtPoint:CGPointMake(point.x, point.y+150) withAttributes:dicAttribute];
+    CGRect ageRect          = CGRectMake(point.x, point.y, 210, 45);
+    CGRect gederRect        = CGRectMake(point.x, point.y + 50, 210, 45);
+    CGRect expressionRect   = CGRectMake(point.x, point.y + 100, 210, 45);
+    CGRect beautyRect       = CGRectMake(point.x, point.y + 150, 210, 45);
+
+    [[UIColor colorWithRed:21/255.0 green:118/255.0 blue:65/255.0 alpha:1]set];
+    UIRectFill(ageRect);
+    UIRectFill(gederRect);
+    UIRectFill(expressionRect);
+    UIRectFill(beautyRect);
+    
+    [textDic[@"age"] drawAtPoint:CGPointMake(point.x + 5, point.y + 5) withAttributes:dicAttribute];
+    [textDic[@"gender"] drawAtPoint:CGPointMake(point.x + 5, point.y+55) withAttributes:dicAttribute];
+    [textDic[@"expression"] drawAtPoint:CGPointMake(point.x + 5, point.y+105) withAttributes:dicAttribute];
+    [textDic[@"beauty"] drawAtPoint:CGPointMake(point.x + 5, point.y+155) withAttributes:dicAttribute];
     
     UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();    // make image out of bitmap context
     UIGraphicsEndImageContext();                                        // free the context
